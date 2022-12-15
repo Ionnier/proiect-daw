@@ -1,0 +1,64 @@
+﻿@page "{id:long}"
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ProiectDAW.Pages.CategoryModel
+@{
+	ViewData["Title"] = Model.category.CategoryName;
+}
+
+<div class="text-center">
+	<h1 class="display-1">@Model.category.CategoryName</h1>
+	<p>@Model.category.CategoryDescription</p>
+
+	@if (Model.posts.Count > 1)
+	{
+		@if (Model.ascendent)
+		{
+			<a class="btn btn-primary" asp-page="/category" asp-route-id="@Model.category.CategoryId" asp-route-direction="desc" role="button">Sorteaza</a>
+		}
+		else
+		{
+			<a class="btn btn-primary" asp-page="/category" asp-route-id="@Model.category.CategoryId" role="button">Sorteaza</a>
+
+		}
+	}
+	
+	<div class="text-start">
+		@foreach (var item in Model.posts)
+		{
+			<div>
+				<h3> <a asp-page="/Post" asp-route-id="@item.PostId"> @item.PostTitle </a> </h3>
+				@{ 
+					var lenght = 100;
+					if (item.PostBody.Length < 100){
+						lenght = item.PostBody.Length;
+					}	 
+				}
+				<p>@item.PostBody.Substring(0, lenght)</p>
+				<p class="text-end">@item.CreatedDate</p>
+			</div>
+		}
+	</div>
+
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<form asp-page="Post" method="post">
+
+			<div class="form-group">
+				<label asp-for="@Model.postTitle"> Titlu </label>
+				<input class="form-control" asp-for="@Model.postTitle" />
+			</div>
+			<input type="hidden" asp-for="@Model.categoryId" value="@Model.category.CategoryId" />
+			<div><span asp-validation-for="@Model.postTitle" class="text-danger"></span></div>
+			<p> </p>
+			<label asp-for="@Model.postBody" > Continut </label>
+			<textarea class="form-control" id="exampleFormControlTextarea1" asp-for="@Model.postBody" rows="3"></textarea>
+			<div><span asp-validation-for="@Model.postBody" class="text-danger"></span></div>
+
+			<p/>
+			<br>
+			<input class="btn btn-outline-primary" type="submit" value="Posteaza" />
+		</form>
+	}
+
+</div>

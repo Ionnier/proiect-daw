@@ -1,0 +1,68 @@
+﻿@page
+@model ProiectDAW.Pages.SearchModel
+@{
+    ViewData["Title"] = "Cautare";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col align-items-start">
+            <h2>
+                Cautare pentru @Model.QueryString
+            </h2>
+        </div>
+    </div>
+
+    @if (Model.postsTitle.Count > 0)
+    {
+        <div class="row">
+            <div class="col align-items-start">
+                <h3>
+                    Cautare dupa titlu:
+                </h3>
+            </div>
+        </div>
+
+        @foreach (var item in Model.postsTitle)
+        {
+            <div class="row">
+                <h3> <a asp-page="/Post" asp-route-id="@item.PostId"> @item.PostTitle </a> </h3>
+            </div>
+        }
+    }
+
+    @if (Model.postsContent.Count > 0)
+    {
+        <div class="row">
+            <div class="col align-items-start">
+                <h3>
+                    Cautare dupa continut:
+                </h3>
+            </div>
+        </div>
+
+        @foreach (var item in Model.postsContent)
+        {
+            <div class="row">
+                <h3> <a asp-page="/Post" asp-route-id="@item.PostId"> @item.PostTitle </a> </h3>
+                @{
+                    var body = item.PostBody;
+                    var maxLength = body.Length;
+                    var indexOf = body.IndexOf(Model.QueryString);
+                    var start = indexOf - 25;
+                    if (start < 0)
+                    {
+                        start = indexOf;
+                    }
+                    var end = Model.QueryString.Length + 25;
+                    if (indexOf + end > maxLength)
+                    {
+                        end = maxLength - indexOf;
+                    }
+                }
+                <p> @item.PostBody.Substring(indexOf-start, start+end)</p>
+            </div>
+        }
+    }
+
+</div>

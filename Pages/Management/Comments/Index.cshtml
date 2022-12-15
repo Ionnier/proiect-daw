@@ -1,0 +1,51 @@
+﻿@page
+@model ProiectDAW.Pages.Management.Comments.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].CommentText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].Post)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Comment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Post.PostTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CommentId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.CommentId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CommentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

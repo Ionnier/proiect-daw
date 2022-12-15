@@ -1,0 +1,26 @@
+﻿@page
+@model ProiectDAW.Pages.SignupModel
+@{
+}
+
+<h1 class="display-1">Signup</h1>
+
+<form asp-page="signup" method="post">
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+	<label class="form-label"  asp-for="<@Model.UserName"> Username </label>
+	<input class="form-control"  asp-for="<@Model.UserName" />
+	<p/>
+
+	<label class="form-label"  asp-for="<@Model.Email"> Email </label>
+	<input class="form-control"  asp-for="@Model.Email" />
+	<p/>
+
+	<label class="form-label"  asp-for="<@Model.Password"> Password </label>
+	<input class="form-control"  asp-for="@Model.Password" />
+	<p/>
+
+	<input type="submit" class="btn btn-primary col-12" value="Sign Up"/>
+	<p/>
+
+</form>

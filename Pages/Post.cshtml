@@ -1,0 +1,105 @@
+﻿@page "{id:int}"
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ProiectDAW.Pages.PostModel
+@{
+	ViewData["Title"] = "Postare";
+}
+
+<div class="text-start">
+
+	<div class="row bg-light" style="flex-grow:1;">
+		<h3 class="text-center">@Model.post.PostTitle</h3>
+		<p class="bg-light" style="text-align: justify; text-justify: inter-word;">@Model.post.PostBody</p>
+	</div>
+
+	<div class="row align-content-end">
+		<div class="col-9">
+			<span ></span>
+		</div>
+		<div class="col-3 align-content-end">
+			@if (Model.post.User == null)
+					{
+						<div class="card bg-light mb-3" style="max-width: 18rem;">
+						 <div class="card-header">Anonymous</div>
+							<div class="card-body">
+								<p class="card-text">@Model.post.CreatedDate</p>
+
+							</div>
+						</div>
+					} else {
+						<div class="card bg-light mb-3" style="max-width: 18rem;">
+							<div class="card-header">@Model.post.User.UserName</div>
+						  <div class="card-body">
+								<img class="card-title" style="width: 50px; height: 50px;" src="@Model.post.User.AvatarUri" alt="" />
+								<p class="card-text">@Model.post.CreatedDate</p>
+						  </div>
+						</div>		
+					}	
+		</div>
+		<br />
+	</div>
+
+
+	@foreach (var item in Model.post.comments)
+	{
+		<div>
+			<div class="row align-content-start border border-primary" style="margin: 20px; padding: 10px;">
+				<div class="col">
+					@if (item.User == null)
+					{
+						<div class="card bg-light mb-3" style="max-width: 18rem;">
+						 <div class="card-header">Anonymous</div>
+							<div class="card-body">
+								 <i class="bi bi-person card-title"></i>
+								<img class="card-title" style="width: 50px; height: 50px;" src="https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png" alt="" />
+
+								
+								<p class="card-text">@item.CreatedDate</p>
+
+							</div>
+						</div>
+					} else {
+						
+						<div class="card bg-light mb-3" style="max-width: 18rem;">
+						<div class="card-header"><a asp-page="User" asp-route-Id="@item.User.UserId"> @item.User.UserName </a> </div>
+						 <div class="card-body">
+								@if (String.IsNullOrEmpty(item.User.AvatarUri))
+								{
+								<img class="card-title" style="width: 50px; height: 50px;" src="https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png" alt="" />
+
+								} else
+								{
+									<img class="card-title" style="width: 50px; height: 50px;" src="@item.User.AvatarUri" alt="" />
+
+								}
+								<p class="card-text">@item.CreatedDate</p>
+						  </div>
+						</div>		
+					}	
+				</div>
+
+				<div class="col-10 bg-light">
+					<p>@item.CommentText</p>
+				</div>
+				
+			
+			</div>
+			
+		</div>
+	}
+
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<form asp-page="Post" method="post">
+			<input type="hidden" asp-for="@Model.comment.PostId" value="@Model.post.PostId"/>
+
+			<div class="form-group row">
+				<label asp-for="@Model.comment.CommentText" class="col-sm-2 col-form-label">Comentariu</label>
+				<div class="col-sm-10">
+					<input class="form-control" asp-for="@Model.comment.CommentText">
+				</div>
+			</div>
+		</form>
+	}
+</div>

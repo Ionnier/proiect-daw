@@ -1,0 +1,72 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProiectDAW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProiectDAWd.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row row justify-content-between">
+            <div class="col align-middle text-start">
+                  <a class="nav-link px-2 link-secondary" href="/"> Home </a>
+            </div>
+
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="col-1 align-middle text-end">
+                            <p><a class="nav-link px-2 link-secondary" href="/Management">Management</a></p>
+                        </div>
+                    }
+                    <div class="col-1 align-middle text-end">
+                        <p><a asp-page="Profile" class="nav-link px-2 link-secondary">Profile</a></p>
+                </div>
+                    <div class="col-1 align-middle text-end">
+                        <p><a asp-page="Logout" class="nav-link px-2 link-secondary">Logout</a></p>
+                </div>
+            } 
+            else
+            {
+                    <div class="col-1 align-middle text-end">
+                        <p><a asp-page="Login" class="nav-link px-2 link-secondary">Login</a></p>
+                </div>
+                <div class="col-1 align-middle text-end">
+                        <p><a asp-page="Signup" class="nav-link px-2 link-secondary">Sign Up</a></p>
+                </div>
+            }
+
+
+                <div class="col-1 align-middle text-end align-top align-text-top">
+                    <form asp-page="Search" method="post">
+                        <input class="form-control mr-1" name="QueryString" />
+                    </form>
+            </div>
+          </div>
+        </div>
+
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
